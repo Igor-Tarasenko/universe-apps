@@ -11,82 +11,6 @@
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         $('body').addClass('mobile');
     }
-
-    /* ------------------------------------------------------------------------ */
-    /*  Init body backround type
-    /* ------------------------------------------------------------------------ */
-    function pageBackground() {
-        var body = $('body');
-        if (body.hasClass('image-background')) { // Image background
-            $.backstretch(["img/backgrounds/bg-4.jpg"]); // Replace here Image Background
-        } else if (body.hasClass('slideshow-background')) { // Slideshow background
-            $.backstretch([
-                "img/backgrounds/bg-3.jpg", // Add different images
-                "img/backgrounds/bg-4.jpg",
-                "img/backgrounds/bg-6.jpg",
-                "img/backgrounds/bg-1.jpg",
-                "img/backgrounds/bg-2.jpg"
-            ], {
-                duration: 3000,
-                fade: 800
-            });
-        } else if (body.hasClass('video-youtube-background') || body.hasClass('video-youtube-list')) { // Video background
-            if (!$('html').hasClass('touch') && !body.hasClass('mobile')) { // Detect mobile devices
-                // Init YOUTUBE PLAYER
-                var videoPlayer = $(".video-player");
-                if (videoPlayer.length) {
-                    if (body.hasClass('video-youtube-background')) { // Youtube SINGLE video
-                        videoPlayer.each(function() {
-                            $(this).mb_YTPlayer();
-                        });
-                    } else if (body.hasClass('video-youtube-list')) { // Youtube LIST video
-                        var videos = [{
-                            videoURL: "a-11dtG7aK4",
-                            containment: 'body',
-                            autoPlay: true,
-                            mute: true,
-                            startAt: 0,
-                            opacity: 1,
-                            loop: false,
-                            ratio: "4/3",
-                            addRaster: true
-                        }, {
-                            videoURL: "fpViZkhpPHk",
-                            containment: 'body',
-                            autoPlay: true,
-                            mute: true,
-                            startAt: 0,
-                            opacity: 1,
-                            loop: false,
-                            ratio: "4/3",
-                            addRaster: false
-                        }, {
-                            videoURL: "lNMfEyFFNHw",
-                            containment: 'body',
-                            autoPlay: true,
-                            mute: true,
-                            startAt: 0,
-                            opacity: 1,
-                            loop: false,
-                            ratio: "4/3",
-                            addRaster: true
-                        }];
-                        videoPlayer.YTPlaylist(videos, true);
-                    }
-                    if (videoPlayer.hasClass('video-blur')) {
-                        var filters = {
-                            blur: 45
-                        };
-                        videoPlayer.YTPApplyFilters(filters);
-                    }
-                }
-            } else { // Default background on mobile devices
-                $.backstretch(["img/backgrounds/bg-4.jpg"]);
-            }
-        }
-    }
-    pageBackground();
-
     /* ------------------------------------------------------------------------ */
     /*  Countdown
     /* ------------------------------------------------------------------------ */
@@ -173,7 +97,7 @@
 
     var prevIndex = 0;
     $('#fullpage').fullpage({
-        anchors: ['welcome', 'about', 'apps', 'join', 'contacts'],
+        anchors: ['about', 'apps', 'join', 'contacts'],
         menu: '#header-nav',
         scrollingSpeed: 800,
         autoScrolling: true,
@@ -191,9 +115,9 @@
         afterLoad: function(anchorLink, index) {
             slideElem.removeClass('transition');
             $('#sidebar-nav li').eq(prevIndex).removeClass('current');
-            $('#sidebar-nav li').eq(index - 1).addClass('current');
+            $('#sidebar-nav li').eq(index - 2).addClass('current');
             isSlideAnimation = false;
-            prevIndex = index - 1;
+            prevIndex = index - 2;
         },
         afterRender: function() {
             isSlideAnimation = false;
@@ -260,29 +184,6 @@
     }
 
     /* ------------------------------------------------------------------------ */
-    /*  Popups
-    /* ------------------------------------------------------------------------ */
-    // Video
-    $('.js-link-video').magnificPopup({
-        type: 'iframe',
-        closeBtnInside: true
-    });
-
-    // Gallery
-    $('.js-gallery').magnificPopup({
-        delegate: 'a',
-        type: 'image',
-        tLoading: 'Loading image #%curr%...',
-        mainClass: 'mfp-img-mobile',
-        image: {
-            tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
-        },
-        gallery: {
-            enabled: true
-        }
-    });
-
-    /* ------------------------------------------------------------------------ */
     /*  ANIMATED ELEMENTS
     /* ------------------------------------------------------------------------ */
     $('.animated').appear();
@@ -346,56 +247,6 @@
         /* ------------------------------------------------------------------------ */
         /*  Carousel
         /* ------------------------------------------------------------------------ */
-        /*var carousel = $(".owl-carousel");
-        if (carousel.length) {
-            carousel.each(function() {
-                var currentCarousel = $(this);
-                if (currentCarousel.hasClass('js-gallery')) {
-                    currentCarousel.owlCarousel({
-                        items: 1,
-                        dots: true,
-                        center: false,
-                        autoplay: false,
-                        autoplayHoverPause: true
-
-                    });
-                } else {
-                    currentCarousel.owlCarousel({
-                        items: 4,
-                        dots: false,
-                        nav: false,
-                        center: false,
-                        autoplay: false,
-                        autoplayHoverPause: true,
-                        responsive: {
-                            0: {
-                                items: 1
-                            },
-                            767: {
-                                items: 2
-                            },
-                            991: {
-                                items: 3
-                            },
-                            1199: {
-                                items: 4
-                            }
-                        }
-                    });
-                }
-
-                // Custom navigation
-                var customNav = currentCarousel.next('.owl-carousel-nav');
-                if (customNav.length) {
-                    customNav.on('click', '.prev', function() {
-                        currentCarousel.trigger('prev.owl.carousel');
-                    });
-                    customNav.on('click', '.next', function() {
-                        currentCarousel.trigger('next.owl.carousel');
-                    });
-                }
-            });
-        }*/
         $(".slider").slick({
             infinite: true,
             slidesToShow: 4,
@@ -442,6 +293,27 @@
                     }
                 }
             ]
+        });
+        /* ------------------------------------------------------------------------ */
+        /*  Input File
+        /* ------------------------------------------------------------------------ */
+        var inputs = document.querySelectorAll('.contact-form-file');
+        Array.prototype.forEach.call(inputs, function(input){
+            var label	 = input.nextElementSibling,
+                labelVal = label.innerHTML;
+            input.addEventListener('change', function(e){
+                var fileName = '';
+                if( this.files && this.files.length > 1 )
+                    fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+                else
+                    fileName = e.target.value.split( '\\' ).pop();
+                if( fileName )
+                    label.querySelector( 'span' ).innerHTML = fileName;
+                else
+                    label.innerHTML = labelVal;
+            });
+            input.addEventListener('focus', function(){ input.classList.add( 'has-focus' ); });
+            input.addEventListener('blur', function(){ input.classList.remove( 'has-focus' ); });
         });
     });
 })(jQuery);
