@@ -1,87 +1,8 @@
-/*-----------------------------------------------------------------------------------
-
-    Template Name: New Launch v1.0.0 | Responsive Coming Soon Page HTML
-    Author: MZ
-    Author URI: http://themeforest.net/user/mzworks
-
------------------------------------------------------------------------------------*/
-
 (function($) {
     'use strict';
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         $('body').addClass('mobile');
     }
-    /* ------------------------------------------------------------------------ */
-    /*  Countdown
-    /* ------------------------------------------------------------------------ */
-    var clock = $('#clock');
-    if (clock.length) {
-        if (clock.hasClass('js-timer-elapsed')) {
-            // Elasped timer/countdown
-
-            //Put your date
-            var year = '2009';
-            var month = '03';
-            var day = '11';
-            var time = '00:00:00';
-            //End Put your date
-
-            var date = year + '/' + month + '/' + day + ' ' + time;
-            var now = new Date();
-            var dateFormat = 'YYYY/MM/DD hh:mm:ss';
-
-            var momentDate = moment(date, dateFormat);
-            var momentNow = moment(now, dateFormat);
-
-            var outputYears = moment(momentNow, dateFormat).diff(momentDate, 'years');
-            var outputYearsLabel = outputYears > 1 ? 'Years' : 'Year';
-
-            var dateCurrentYear = now.getFullYear() + '/' + month + '/' + day + ' ' + time;
-            var outputDays = moment(dateCurrentYear, dateFormat).diff(momentNow, 'days');
-            var outputDaysLabel = outputDays > 1 ? 'Days' : 'Day';
-
-            var outputMonths = moment(dateCurrentYear, dateFormat).diff(momentNow, 'months');
-
-            clock.countdown(date, {
-                elapse: true,
-                strftime: dateFormat
-            }).on('update.countdown', function(event) {
-                var output = [
-                    '<div class="counter-container">',
-                    '<div class="counter-box first"><div class="number">' + Math.abs(outputYears) + '</div><span>' + outputYearsLabel + '</span></div>', // Years
-                    '<div class="counter-box first"><div class="number">' + Math.abs(outputMonths) + '</div><span>Months</span></div>', // Months
-                    '<div class="counter-box first"><div class="number">' + Math.abs(outputDays) + '</div><span>' + outputDaysLabel + '</span></div>', // Days
-                    '<div class="counter-box"><div class="number">%H</div><span>Hours</span></div>', // Hours
-                    '<div class="counter-box"><div class="number">%M</div><span>Minutes</span></div>', // Minutes
-                    '<div class="counter-box last"><div class="number">%S</div><span>Seconds</span></div></div>', // Seconds
-                    '</div>'
-                ].join('\n');
-                $(this).html(
-                    event.strftime(output)
-                );
-            });
-        } else {
-            // Default countdown
-            clock.countdown('2019/10/14 12:00:00').on('update.countdown', function(event) {
-                var output = [
-                    '<div class="counter-container"><div class="counter-box first"><div class="number">%-D</div><span>Day%!d</span></div>', //Days
-                    '<div class="counter-box"><div class="number">%H</div><span>Hours</span></div>', //Hours
-                    '<div class="counter-box"><div class="number">%M</div><span>Minutes</span></div>', //Minutes
-                    '<div class="counter-box last"><div class="number">%S</div><span>Seconds</span></div></div>' //Seconds
-                ].join('\n');
-                $(this).html(
-                    event.strftime(output)
-                );
-            });
-        }
-    }
-
-
-    /* ------------------------------------------------------------------------ */
-    /*  FitVivs | responsive video
-    /* ------------------------------------------------------------------------ */
-    $(".js-video-container").fitVids();
-
     /* ------------------------------------------------------------------------ */
     /*  Tooltips
     /* ------------------------------------------------------------------------ */
@@ -97,7 +18,7 @@
 
     var prevIndex = 0;
     $('#fullpage').fullpage({
-        anchors: ['about', 'apps', 'join', 'contacts'],
+        anchors: ['welcome', 'about', 'apps', 'join', 'contacts'],
         menu: '#header-nav',
         scrollingSpeed: 800,
         autoScrolling: true,
@@ -105,6 +26,7 @@
         easing: 'easeInOutCubic',
         resize: false,
         css3: false,
+        normalScrollElements: '#modalWindow',
         responsive: 1000,
         onLeave: function(index, nextIndex, direction) {
             if (!isSlideAnimation) {
@@ -112,12 +34,11 @@
             }
             isSlideAnimation = true;
         },
-        afterLoad: function(anchorLink, index) {
+        afterLoad: function(origin, index) {
+            var loadedSection = this;
             slideElem.removeClass('transition');
-            $('#sidebar-nav li').eq(prevIndex).removeClass('current');
-            $('#sidebar-nav li').eq(index - 2).addClass('current');
             isSlideAnimation = false;
-            prevIndex = index - 2;
+            prevIndex = index - 1;
         },
         afterRender: function() {
             isSlideAnimation = false;
@@ -162,27 +83,6 @@
             return false;
         });
     }
-
-    /* ------------------------------------------------------------------------ */
-    /*  Mailchimp subscribe
-    /* ------------------------------------------------------------------------ */
-    var mailchimpForm = $('.mailchimp-form');
-
-    function mailchimpMsg(resp) {
-        if (resp.result === 'success') {
-            mailchimpForm.find('.success-message').html(resp.msg).fadeIn(500);
-            mailchimpForm.find('.error-message').fadeOut(200);
-        } else if (resp.result === 'error') {
-            mailchimpForm.find('.error-message').html(resp.msg).fadeIn(500);
-        }
-    }
-    if (mailchimpForm.length) {
-        mailchimpForm.ajaxChimp({
-            callback: mailchimpMsg,
-            url: "//mzworks.us11.list-manage.com/subscribe/post?u=f8b7080a6aeab4d4219940a06&amp;id=2fd7eed4be" // Replace this with your own mailchimp post URL. Paste the url inside "". The mailchimp post url will look like this: http://blahblah.us1.list-manage.com/subscribe/post?u=5afsdhfuhdsiufdba6f8802&id=4djhfdsh99f
-        });
-    }
-
     /* ------------------------------------------------------------------------ */
     /*  ANIMATED ELEMENTS
     /* ------------------------------------------------------------------------ */
