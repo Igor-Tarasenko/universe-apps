@@ -27,12 +27,34 @@
         resize: false,
         css3: false,
         normalScrollElements: '#modalWindow',
-        responsive: 1000,
+        /*responsive: 1000,*/
         onLeave: function(index, nextIndex, direction) {
             if (!isSlideAnimation) {
                 slideElem.addClass('transition');
             }
+            showCatFace();
+            showHelm();
             isSlideAnimation = true;
+            function showCatFace() {
+                if(nextIndex === 2) {
+                    $('.cat-face').addClass('show-cat');
+                }
+                else {
+                    $('.cat-face').removeClass('show-cat');
+                }
+            }
+            function showHelm() {
+                if(nextIndex > 2) {
+                    $('.helmet_parent-block').addClass('hide-helmet');
+                    setTimeout(function () {
+                        $('.helmet-block').addClass('change-index');
+                    }, 1000);
+                }
+                else {
+                    $('.helmet_parent-block').removeClass('hide-helmet');
+                    $('.helmet-block').removeClass('change-index');
+                }
+            }
         },
         afterLoad: function(origin, index) {
             var loadedSection = this;
@@ -151,11 +173,26 @@
             infinite: true,
             slidesToShow: 4,
             slidesToScroll: 1,
-            autoplay: false,
-            autoplaySpeed: 1000,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            arrows: false,
             responsive: [
                 {
                     breakpoint: 1200,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 1
+                    }
+                },
+                {
+                    breakpoint: 700,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1
+                    }
+                },
+                {
+                    breakpoint: 500,
                     settings: {
                         slidesToShow: 1,
                         slidesToScroll: 1
@@ -182,11 +219,19 @@
             infinite: true,
             slidesToShow: 4,
             slidesToScroll: 1,
-            autoplay: false,
-            autoplaySpeed: 1000,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            arrows: false,
             responsive: [
                 {
                     breakpoint: 1200,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 1
+                    }
+                },
+                {
+                    breakpoint: 700,
                     settings: {
                         slidesToShow: 1,
                         slidesToScroll: 1
@@ -214,6 +259,18 @@
             });
             input.addEventListener('focus', function(){ input.classList.add( 'has-focus' ); });
             input.addEventListener('blur', function(){ input.classList.remove( 'has-focus' ); });
+        });
+        /* ------------------------------------------------------------------------ */
+        /*  Menu on mobile
+        /* ------------------------------------------------------------------------ */
+        $(".navbar-toggler").click(function () {
+            $(".navbar-collapse").addClass("active");
+        });
+        $(document).mouseup(function (e) {
+            var div = $(".navbar-collapse");
+            if (!div.is(e.target) && div.has(e.target).length === 0) {
+                div.removeClass("active");
+            }
         });
     });
 })(jQuery);
