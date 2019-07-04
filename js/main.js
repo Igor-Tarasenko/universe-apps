@@ -170,32 +170,31 @@
         /*  Carousel
         /* ------------------------------------------------------------------------ */
         $(".slider").slick({
-            infinite: true,
             slidesToShow: 4,
             slidesToScroll: 1,
-            autoplay: true,
+            autoplay: false,
             autoplaySpeed: 2000,
             arrows: false,
+            infinity: false,
             responsive: [
                 {
                     breakpoint: 1200,
                     settings: {
                         slidesToShow: 3,
-                        slidesToScroll: 1
                     }
                 },
                 {
                     breakpoint: 700,
                     settings: {
                         slidesToShow: 2,
-                        slidesToScroll: 1
                     }
                 },
                 {
                     breakpoint: 500,
                     settings: {
                         slidesToShow: 1,
-                        slidesToScroll: 1
+                        centerMode: true,
+                        variableWidth: true
                     }
                 }
             ]
@@ -219,7 +218,7 @@
             infinite: true,
             slidesToShow: 4,
             slidesToScroll: 1,
-            autoplay: true,
+            autoplay: false,
             autoplaySpeed: 2000,
             arrows: false,
             responsive: [
@@ -265,6 +264,9 @@
         /* ------------------------------------------------------------------------ */
         $(".navbar-toggler").click(function () {
             $(".navbar-collapse").addClass("active");
+        });
+        $(".navbar-nav").click(function () {
+            $(".navbar-collapse").removeClass("active");
         });
         $(document).mouseup(function (e) {
             var div = $(".navbar-collapse");
