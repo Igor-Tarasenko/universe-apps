@@ -1,8 +1,5 @@
 (function($) {
     'use strict';
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        $('body').addClass('mobile');
-    }
     /* ------------------------------------------------------------------------ */
     /*  Tooltips
     /* ------------------------------------------------------------------------ */
@@ -27,7 +24,6 @@
         resize: false,
         css3: false,
         normalScrollElements: '#modalWindow',
-        /*responsive: 1000,*/
         onLeave: function(index, nextIndex, direction) {
             if (!isSlideAnimation) {
                 slideElem.addClass('transition');
@@ -172,7 +168,7 @@
         $(".slider").slick({
             slidesToShow: 4,
             slidesToScroll: 1,
-            autoplay: false,
+            autoplay: true,
             autoplaySpeed: 2000,
             arrows: false,
             infinity: false,
@@ -218,7 +214,7 @@
             infinite: true,
             slidesToShow: 4,
             slidesToScroll: 1,
-            autoplay: false,
+            autoplay: true,
             autoplaySpeed: 2000,
             arrows: false,
             responsive: [
@@ -243,7 +239,7 @@
         /* ------------------------------------------------------------------------ */
         var inputs = document.querySelectorAll('.contact-form-file');
         Array.prototype.forEach.call(inputs, function(input){
-            var label	 = input.nextElementSibling,
+            var label = input.nextElementSibling,
                 labelVal = label.innerHTML;
             input.addEventListener('change', function(e){
                 var fileName = '';
