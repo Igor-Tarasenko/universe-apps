@@ -75,6 +75,8 @@
     if (contactForm.length) {
         $(document).on('submit', '#contact-form', function(e) {
             e.preventDefault();
+            var error_message = contactForm.find('.error-message');
+            var success_message = contactForm.find('.success-message');
             var user_name = contactForm.find('input[name=name]').val();
             var user_email = contactForm.find('input[name=email]').val();
             var user_message = contactForm.find('textarea[name=message]').val();
@@ -90,13 +92,21 @@
                 return pattern.test(email);
             }
             if (ValidateEmail(user_email) && (user_message.length > 1) && (user_name.length > 1)) {
-                $.post('sendmail.php', post_data, function(response) {
-                    contactForm.find('.success-message').fadeIn(500);
-                    contactForm.find('.error-message').fadeOut(200);
+                fetch('https://bic2xlt1e9.execute-api.us-east-1.amazonaws.com/dev/message', {
+                    method: 'post',
+                    body: JSON.stringify({name: user_name, email: user_email, message: user_message})
+                }).then(function(response) {
+                    return response.json();
+                }).then(function(data) {
+                    success_message.fadeIn(500);
+                    error_message.fadeOut(200);
+                }).catch(function(err) {
+                    error_message.fadeIn(500);
+                    success_message.fadeOut(200);
                 });
             } else {
-                contactForm.find('.error-message').fadeIn(500);
-                contactForm.find('.success-message').fadeOut(200);
+                error_message.fadeIn(500);
+                success_message.fadeOut(200);
             }
             return false;
         });
