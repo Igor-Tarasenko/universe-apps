@@ -82,9 +82,9 @@
             var user_message = contactForm.find('textarea[name=message]').val();
             //data to be sent to server
             var post_data = {
-                'userName': user_name,
-                'userEmail': user_email,
-                'userMessage': user_message
+                'name': user_name,
+                'mail': user_email,
+                'message': user_message
             };
 
             function ValidateEmail(email) {
@@ -92,17 +92,15 @@
                 return pattern.test(email);
             }
             if (ValidateEmail(user_email) && (user_message.length > 1) && (user_name.length > 1)) {
-                fetch('https://bic2xlt1e9.execute-api.us-east-1.amazonaws.com/dev/message', {
-                    method: 'post',
-                    body: JSON.stringify({name: user_name, email: user_email, message: user_message})
-                }).then(function(response) {
-                    return response.json();
-                }).then(function(data) {
-                    success_message.fadeIn(500);
-                    error_message.fadeOut(200);
-                }).catch(function(err) {
-                    error_message.fadeIn(500);
-                    success_message.fadeOut(200);
+                $.ajax({
+                    url: 'https://bic2xlt1e9.execute-api.us-east-1.amazonaws.com/dev/message',
+                    type: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    data: JSON.stringify(post_data),
+                    success: function(){
+                        error_message.fadeOut(200);
+                        success_message.fadeIn(500);
+                    }
                 });
             } else {
                 error_message.fadeIn(500);
