@@ -75,14 +75,16 @@
     if (contactForm.length) {
         $(document).on('submit', '#contact-form', function(e) {
             e.preventDefault();
+            var error_message = contactForm.find('.error-message');
+            var success_message = contactForm.find('.success-message');
             var user_name = contactForm.find('input[name=name]').val();
             var user_email = contactForm.find('input[name=email]').val();
             var user_message = contactForm.find('textarea[name=message]').val();
             //data to be sent to server
             var post_data = {
-                'userName': user_name,
-                'userEmail': user_email,
-                'userMessage': user_message
+                'name': user_name,
+                'mail': user_email,
+                'message': user_message
             };
 
             function ValidateEmail(email) {
@@ -90,13 +92,19 @@
                 return pattern.test(email);
             }
             if (ValidateEmail(user_email) && (user_message.length > 1) && (user_name.length > 1)) {
-                $.post('sendmail.php', post_data, function(response) {
-                    contactForm.find('.success-message').fadeIn(500);
-                    contactForm.find('.error-message').fadeOut(200);
+                $.ajax({
+                    url: 'https://bic2xlt1e9.execute-api.us-east-1.amazonaws.com/dev/message',
+                    type: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    data: JSON.stringify(post_data),
+                    success: function(){
+                        error_message.fadeOut(200);
+                        success_message.fadeIn(500);
+                    }
                 });
             } else {
-                contactForm.find('.error-message').fadeIn(500);
-                contactForm.find('.success-message').fadeOut(200);
+                error_message.fadeIn(500);
+                success_message.fadeOut(200);
             }
             return false;
         });
